@@ -6,7 +6,6 @@
 //
 
 struct Endpoint {
-
     let path: String
     let method: String
 
