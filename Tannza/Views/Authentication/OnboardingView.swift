@@ -15,8 +15,8 @@ struct OnboardingView: View {
         
         let apiClient = APIClient()
                 let authService = AuthService(apiClient: apiClient)
-                let viewModel = LoginViewModel(authService: authService)
-        
+                let viewModel = OtpViewModel(authService: authService)
+
         NavigationStack {
             ZStack {
                 Image("BGImage")

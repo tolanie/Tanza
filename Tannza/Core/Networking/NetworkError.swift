@@ -10,6 +10,3 @@ enum NetworkError: Error {
     case requestFailed
     case decodingFailed
 }
-
-
-

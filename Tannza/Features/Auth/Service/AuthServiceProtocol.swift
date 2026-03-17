@@ -7,8 +7,6 @@
 
 import Foundation
 
-
 protocol AuthServiceProtocol {
     func sendOtp(request: OTPRequest) async throws -> OTPResponse
 }
-

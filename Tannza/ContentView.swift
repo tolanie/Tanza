@@ -11,7 +11,7 @@ struct ContentView: View {
     var body: some View {
         let apiClient = APIClient()
                 let authService = AuthService(apiClient: apiClient)
-                let viewModel = LoginViewModel(authService: authService)
+                let viewModel = OtpViewModel(authService: authService)
 //        OnboardingView()
         SignUpView(viewModel: viewModel)
     }
