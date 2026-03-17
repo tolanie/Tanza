@@ -21,7 +21,7 @@ struct ButtonView: View {
     
     var body: some View {
         Button {
-            //action
+            action()
         } label: {
             HStack (spacing: 6) {
                 if let icon {

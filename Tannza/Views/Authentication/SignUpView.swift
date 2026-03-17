@@ -8,29 +8,20 @@
 import SwiftUI
 
 struct SignUpView: View {
+    @StateObject var viewModel: LoginViewModel
     
-    @State private var phoneNumber = ""
-    var isPhoneValid: Bool {
-        let digitsOnly = phoneNumber.filter {
-            $0.isNumber
-        }
-        return digitsOnly.count == 10
-    }
+//    @State private var phoneNumber = ""
+//    var isPhoneValid: Bool {
+//        let digitsOnly = phoneNumber.filter {
+//            $0.isNumber
+//        }
+//        return digitsOnly.count == 10
+//    }
     
     var body: some View {
         
         VStack(alignment: .leading) {
-            
-            //back button
-            Button {
-                //action
-            } label: {
-                Image(systemName: "chevron.left")
-                    .font(.title2)
-                    .foregroundColor(.black)
-            }
-            .padding(.bottom, 32)
-            
+                        
             VStack (alignment: .leading, spacing: 24) {
                 
                 // logo
@@ -42,7 +33,7 @@ struct SignUpView: View {
                 //heading text and underline
                 VStack(alignment: .leading, spacing: 10) {
                     
-                    Text("Enter your \nmobile number")
+                    Text("Enter your mobile number")
                         .font(.title)
                         .fontWeight(.semibold)
                         .foregroundColor(.black)
@@ -75,7 +66,7 @@ struct SignUpView: View {
                 .frame(height: 50)
                 .cornerRadius(8)
                 
-                TextField("9153065907", text: $phoneNumber)
+                TextField("9153065907", text: $viewModel.phoneNumber)
                     .keyboardType(.numberPad)
                     .padding()
                     .background(Color.gray .opacity(0.1))
@@ -87,9 +78,10 @@ struct SignUpView: View {
                         //sign up button
             VStack (spacing: 24) {
                 
-                ButtonView(title: "Sign up", backgroundColor: Color("Light"), isDisabled: !isPhoneValid, foregroundColor: .white) {
-                    print("Sign up tapped")
-                }
+                ButtonView(title: "Sign up", backgroundColor: Color("Light"), isDisabled: false, foregroundColor: .white) {
+                    viewModel.login()
+                    debugPrint("Signup....")
+                }.alert("", isPresented: <#T##Binding<Bool>#>, actions: <#T##() -> A#>)
                 
                 Text("By proceeding, you concent to get calls, Whatsapp or SMS messages, including by automated means, from LogiFlow and it's affiliates to the number provided and Hereby agree to our terms and condition.")
                     .font(.caption)
@@ -169,7 +161,10 @@ struct SignUpView: View {
 }
 
 #Preview {
-    SignUpView()
+    let apiClient = APIClient()
+            let authService = AuthService(apiClient: apiClient)
+            let viewModel = LoginViewModel(authService: authService)
+    SignUpView(viewModel: viewModel)
 }
 
 

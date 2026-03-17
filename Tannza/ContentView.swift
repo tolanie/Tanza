@@ -9,8 +9,11 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
+        let apiClient = APIClient()
+                let authService = AuthService(apiClient: apiClient)
+                let viewModel = LoginViewModel(authService: authService)
 //        OnboardingView()
-        SignUpView()
+        SignUpView(viewModel: viewModel)
     }
 }
 
