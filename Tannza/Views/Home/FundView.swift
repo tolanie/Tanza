@@ -12,6 +12,8 @@ struct FundView: View {
         
         NavigationStack {
             
+            ScrollView (showsIndicators: false) {
+            
             VStack (alignment: .leading, spacing: 24) {
                 
                 Text("Choose how you'd like to add money to your wallet")
@@ -59,7 +61,7 @@ struct FundView: View {
                         .font(.headline)
                         .fontWeight(.semibold)
                     
-                    VStack(spacing: 10) {
+                    VStack(spacing: 8) {
                         
                         HStack {
                             
@@ -136,9 +138,9 @@ struct FundView: View {
                             Text("This is your dedicated account. Any transfer to this account will be automatically added to your wallet. It may take up to 3Mins to process.")
                                 .font(.headline)
                                 .fontWeight(.regular)
-
+                            
                         }
-
+                        
                         .padding(8)
                         .foregroundColor(Color("Light"))
                         .background(Color("lightbg"))
@@ -165,14 +167,42 @@ struct FundView: View {
                         Image(systemName: "arrow.right")
                     }
                 }
-
+                
+                .padding()
+                .foregroundColor(.white)
+                .background(Color("Light"))
+                .cornerRadius(8)
+                
+                VStack (alignment: .leading, spacing: 8) {
+                    HStack {
+                        
+                        Image(systemName: "lock.fill")
+                            .foregroundColor(Color("Light"))
+                        
+                        Text("Secure & protected")
+                        
+                    }
+                    .font(.title3)
+                    
+                    
+                    Text("All transactions are encrypted and promoted by bank-level security. Your financiak information is never stored on our servers")
+                        .font(.subheadline)
+                        .fontWeight(.regular)
+                        .foregroundColor(.gray)
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding()
+                .background(Color(.white))
+                .cornerRadius(8)
+                .shadow(radius: 1.5)
                 
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding()
-            .padding(.top, 40)
+            .padding(.top)
             .background(Color(red: 0.95, green: 0.95, blue: 0.97))
             .ignoresSafeArea(.all)
+            
             
             
             .navigationTitle("Fund Account")
@@ -182,6 +212,8 @@ struct FundView: View {
                     Image(systemName: "chevron.left")
                 }
             }
+        }
+            
         }
     }
 }

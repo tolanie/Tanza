@@ -10,6 +10,8 @@ import SwiftUI
 struct HomeView: View {
     var body: some View {
         
+        ScrollView (showsIndicators: false) {
+        
         VStack (alignment: .leading, spacing: 24) {
             
             HStack {
@@ -206,11 +208,10 @@ struct HomeView: View {
                 .shadow(radius: 1.5)
                 
             }
-            
-            Spacer()
-            
+                        
             
         }
+    }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding()
         .padding(.top, 40)

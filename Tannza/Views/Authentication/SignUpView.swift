@@ -45,7 +45,7 @@ struct SignUpView: View {
                     
                 } .padding(.bottom, 10)
                 
-            }
+            }.padding(.top, 32)
             
             HStack {
                 HStack (spacing: 6) {
@@ -81,7 +81,7 @@ struct SignUpView: View {
                 ButtonView(title: "Sign up", backgroundColor: Color("Light"), isDisabled: false, foregroundColor: .white) {
                     viewModel.login()
                     debugPrint("Signup....")
-                }.alert("", isPresented: <#T##Binding<Bool>#>, actions: <#T##() -> A#>)
+                }
                 
                 Text("By proceeding, you concent to get calls, Whatsapp or SMS messages, including by automated means, from LogiFlow and it's affiliates to the number provided and Hereby agree to our terms and condition.")
                     .font(.caption)
