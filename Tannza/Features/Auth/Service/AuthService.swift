@@ -8,7 +8,6 @@
 import Foundation
 
 final class AuthService: AuthServiceProtocol {
-
     private let apiClient: APIClientProtocol
 
     init(apiClient: APIClientProtocol) {
@@ -17,7 +16,8 @@ final class AuthService: AuthServiceProtocol {
 
     func sendOtp(request: OTPRequest) async throws -> OTPResponse {
         return try await apiClient.post(
-            endpoint: .otp, body: request)
+            endpoint: .otp,
+            body: request
+        )
     }
-    
 }

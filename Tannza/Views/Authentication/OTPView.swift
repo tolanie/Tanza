@@ -6,27 +6,29 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct OTPView: View {
-    
+    @Environment(\.dismiss) var dismiss
     @State private var timeRemaining = 60
     @State var timer: Timer?
     @State private var otpText = ""
     @FocusState private var isFocused: Bool
+    @Query var users: [UserData]
     
     var body: some View {
 
         VStack(alignment: .leading, spacing: 16) {
             
             //back button
-            Button {
-                //action
-            } label: {
-                Image(systemName: "chevron.left")
-                    .font(.title2)
-                    .foregroundColor(.black)
-            }
-            .padding(.bottom, 32)
+//            Button {
+//                //action
+//            } label: {
+//                Image(systemName: "chevron.left")
+//                    .font(.title2)
+//                    .foregroundColor(.black)
+//            }
+//            .padding(.bottom, 32)
             
             VStack (alignment: .leading, spacing: 24) {
                 
@@ -38,14 +40,13 @@ struct OTPView: View {
                 
                 //heading text and underline
                 VStack(alignment: .leading, spacing: 18) {
-                    
-                    Text("Enter the 4-digit code sent to you at +234 913***89")
+                    Text("Enter the 4-digit code sent to you at  \(users.first?.phoneNumber ?? "")")
                         .font(.title)
                         .fontWeight(.semibold)
                         .foregroundColor(.black)
                     
                     Button {
-                        //action
+                        dismiss()
                     } label: {
                         Text("Changed your mobile number?")
                             .lineLimit(nil)

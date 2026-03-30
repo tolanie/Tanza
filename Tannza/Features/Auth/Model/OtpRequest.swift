@@ -1,5 +1,5 @@
 //
-//  LoginRequest.swift
+//  OtpRequest.swift
 //  Tannza
 //
 //  Created by Tolanie❤️😘😎😌 on 12/03/2026.

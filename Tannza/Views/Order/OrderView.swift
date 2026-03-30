@@ -8,28 +8,58 @@
 import SwiftUI
 
 struct OrderView: View {
+    
+    @State private var pickup = ""
+    @State private var activeSection: ActiveSection = .none
+    @State private var phone: String = ""
+    
+    struct RequiredLabel: View {
+        let title: String
+        
+        var body: some View {
+            HStack(spacing: 2) {
+                        Text(title)
+                            .font(.caption)
+                            .foregroundColor(.gray)
+                        
+                        Text("*")
+                            .font(.caption)
+                            .foregroundColor(.red)
+                    }
+        }
+    }
+    
     var body: some View {
-
+        
         NavigationStack {
             
             ScrollView (showsIndicators: false) {
                 
-                VStack (alignment: .leading, spacing: 24) {
+                ExpandableSection(title: "Pickup & Sender information",
+                               
+                icon: "location.fill",
+                section: .sender,
+                activeSection: $activeSection,
+                content: AnyView(
+                                    
+                VStack (alignment: .leading, spacing: 16) {
+                                        
+                VStack (alignment: .leading, spacing: 8) {
+                   
+                    // the text field logic, Pickup location input
+                RequiredLabel(title: "Pickup Location")
+                TextField("Select Pickup Location", text: $pickup)
+                        .textFieldStyle(.roundedBorder)
                     
-                    DisclosureGroup("Pickup & Sender Information") {
-                        VStack (alignment: .leading, spacing: 8) {
-                            TextField("Select Pickup", text: .constant(""))
-                                .textFieldStyle(.roundedBorder)
-                            
-                            TextField("Select Pickup", text: .constant(""))
-                                .textFieldStyle(.roundedBorder)
-                        }
-                    }
-                    
+                    RequiredLabel(title: "Sender Phone Number")
+                    TextField("Enter sender's phone number", text: $phone)
+                        .textFieldStyle(.roundedBorder)
+
                 }
-                
-                .padding(.top)
-                .padding(.bottom, 32)
+                                        
+                }
+                                    
+                ))
                 
             }
             
@@ -37,8 +67,8 @@ struct OrderView: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding()
             .background(Color(red: 0.95, green: 0.95, blue: 0.97))
-            .ignoresSafeArea(.all)
-
+            //            .ignoresSafeArea(bottom)
+            
             
             .navigationTitle("Book Logistics")
             .navigationBarTitleDisplayMode(.inline)
@@ -47,7 +77,7 @@ struct OrderView: View {
                 bottomBar
             }
         }
-
+        
     }
 }
 
@@ -72,11 +102,11 @@ extension OrderView {
             } label: {
                 Text("Book Now")
             }
-
+            
         }
         .padding()
         .background(Color.gray.opacity(0.1))
-
+        
         
     }
 }

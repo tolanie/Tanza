@@ -15,7 +15,7 @@ protocol APIClientProtocol {
 
 final class APIClient: APIClientProtocol {
 
-    private let baseURL = "https://api.example.com"
+    private let baseURL = "https://api.delivery.herlay.com/api/v1"
 
     func post<T: Decodable, U: Encodable>(
         endpoint: Endpoint,
