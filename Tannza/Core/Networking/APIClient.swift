@@ -33,7 +33,7 @@ final class APIClient: APIClientProtocol {
         request.httpBody = try JSONEncoder().encode(body)
 
         let (data, _) = try await URLSession.shared.data(for: request)
-
+        print(data, "data........")
         do {
             return try JSONDecoder().decode(T.self, from: data)
         } catch {

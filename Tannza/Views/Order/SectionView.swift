@@ -4,19 +4,18 @@ enum ActiveSection {
     case none, sender, reciever
 }
 
-struct ExpandableSection: View {
+struct ExpandableSection<Content: View>: View {
     let title: String
     let icon: String
     let section: ActiveSection
     @Binding var activeSection: ActiveSection
-    let content: AnyView
+    @ViewBuilder let content: Content
     
     var body: some View {
         VStack(spacing: 0) {
             
             // THE HEADER
             Button(action: {
-                withAnimation(.easeInOut) {
                     withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
                                     if activeSection == section {
                                         activeSection = .none
@@ -24,7 +23,7 @@ struct ExpandableSection: View {
                                         activeSection = section
                                     }
                                 }
-                }
+                
             }) {
                 HStack {
                     Image(systemName: icon)
@@ -40,6 +39,7 @@ struct ExpandableSection: View {
                         .foregroundColor(.gray)
                 }
                 .padding()
+                .contentShape(Rectangle())
             }
             .buttonStyle(PlainButtonStyle())
             

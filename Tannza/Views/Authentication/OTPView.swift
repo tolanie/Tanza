@@ -9,6 +9,7 @@ import SwiftUI
 import SwiftData
 
 struct OTPView: View {
+    @StateObject var viewModel: OtpConsumeViewModel
     @Environment(\.dismiss) var dismiss
     @State private var timeRemaining = 60
     @State var timer: Timer?
@@ -17,18 +18,18 @@ struct OTPView: View {
     @Query var users: [UserData]
     
     var body: some View {
-
+        
         VStack(alignment: .leading, spacing: 16) {
             
             //back button
-//            Button {
-//                //action
-//            } label: {
-//                Image(systemName: "chevron.left")
-//                    .font(.title2)
-//                    .foregroundColor(.black)
-//            }
-//            .padding(.bottom, 32)
+            //            Button {
+            //                //action
+            //            } label: {
+            //                Image(systemName: "chevron.left")
+            //                    .font(.title2)
+            //                    .foregroundColor(.black)
+            //            }
+            //            .padding(.bottom, 32)
             
             VStack (alignment: .leading, spacing: 24) {
                 
@@ -57,7 +58,7 @@ struct OTPView: View {
                     
                 } .padding(.bottom, 10)
                 
-
+                
             }
             
             // the 4 boxes
@@ -115,15 +116,41 @@ struct OTPView: View {
             
             
             ButtonView(title: "Next", backgroundColor: Color("Light"), isDisabled: otpText.count < 4, foregroundColor: .white) {
-                print("Next btn tapped")
+                viewModel.consumeOtp(code: otpText)
             }.padding(.bottom, 60)
                 .disabled(otpText.count < 4)
-
+            
             
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding()
+        .navigationDestination(isPresented: $viewModel.shouldNavigateToEmail) {
+            EmailView()
+        }
+        .alert("Error", isPresented: Binding(
+            get: { viewModel.errorMessage != nil },
+            set: { if !$0 { viewModel.errorMessage = nil } }
+        )) {
+            Button("OK") {
+                viewModel.errorMessage = nil
+            }
+        } message: {
+            Text(viewModel.errorMessage ?? "")
+        }
+        .overlay {
+            if viewModel.isLoading {
+                ZStack {
+                    Color.black.opacity(0.3)
+                        .ignoresSafeArea()
+                    
+                    ProgressView()
+                        .scaleEffect(1.5)
+                        .tint(.white)
+                }
+            }
+        }
     }
+    
     
     //Timer function
     func startTimer() {
@@ -168,5 +195,8 @@ struct OTPView: View {
 }
 
 #Preview {
-    OTPView()
+    let apiClient = APIClient()
+            let authService = AuthService(apiClient: apiClient)
+            let viewModel = OtpConsumeViewModel(authService: authService)
+    OTPView(viewModel: viewModel)
 }

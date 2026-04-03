@@ -12,4 +12,8 @@ struct Endpoint {
     static var otp: Endpoint {
         Endpoint(path: "/otp", method: "POST")
     }
+    
+    static var otpConsume: Endpoint {
+        Endpoint(path: "/otp/consume", method: "POST")
+    }
 }

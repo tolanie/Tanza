@@ -10,8 +10,12 @@ import SwiftUI
 struct OrderView: View {
     
     @State private var pickup = ""
+    @State private var pickupPhone: String = ""
+    
+    @State private var dropoff = ""
+    @State private var dropoffPhone: String = ""
+    
     @State private var activeSection: ActiveSection = .none
-    @State private var phone: String = ""
     
     struct RequiredLabel: View {
         let title: String
@@ -35,31 +39,115 @@ struct OrderView: View {
             
             ScrollView (showsIndicators: false) {
                 
+//                ExpandableSection(title: "Pickup & Sender information",
+//                               
+//                icon: "location.fill",
+//                section: .sender,
+//                activeSection: $activeSection,
+//                content: AnyView
                 ExpandableSection(title: "Pickup & Sender information",
-                               
-                icon: "location.fill",
-                section: .sender,
-                activeSection: $activeSection,
-                content: AnyView(
-                                    
-                VStack (alignment: .leading, spacing: 16) {
-                                        
-                VStack (alignment: .leading, spacing: 8) {
-                   
-                    // the text field logic, Pickup location input
-                RequiredLabel(title: "Pickup Location")
-                TextField("Select Pickup Location", text: $pickup)
-                        .textFieldStyle(.roundedBorder)
+                                  icon: "location.fill",
+                                  section: .sender,
+                                  activeSection: $activeSection                                                ){
                     
-                    RequiredLabel(title: "Sender Phone Number")
-                    TextField("Enter sender's phone number", text: $phone)
-                        .textFieldStyle(.roundedBorder)
+                    VStack (alignment: .leading, spacing: 16) {
+                        
+                        VStack (alignment: .leading, spacing: 8) {
+                            
+                            // the text field logic, Pickup location input
+                            RequiredLabel(title: "Pickup Location")
+                            TextField("Select Pickup Location", text: $pickup)
+                                .textFieldStyle(.roundedBorder)
+                            
+                            RequiredLabel(title: "Sender Phone Number")
+                            TextField("Enter sender's phone number", text: $pickupPhone)
+                                .textFieldStyle(.roundedBorder)
+                            
+                        }
+                        Button {
+                            //Button action
+                        } label: {
+                            
+                            HStack{
+                                Image(systemName: "square")
+                                Text("Use my mobile")
+                            }
 
+                        }
+                    }
                 }
-                                        
+                
+                // Delivery locations where they can add multiple delivery locations and when the add more the number increases e.g 2/10 or 5/10
+                VStack {
+                    HStack{
+                        Image(systemName: "truck.box.fill")
+                            .foregroundColor(Color("Light"))
+                        
+                        Text("Delivery Location")
+                            .font(.headline)
+                        
+                        Spacer()
+                        Text("1/10")
+                            .foregroundColor(.gray)
+                    }
+                    
+                    ExpandableSection(title: "Delivery Location",
+                                      icon: "truck.box.fill",
+                                      section: .reciever, activeSection: $activeSection
+                    ) {
+                        VStack (alignment: .leading, spacing: 16) {
+                            VStack (alignment: .leading) {
+                                
+                                RequiredLabel(title: "Drop-off Address")
+                                TextField("Select drop-off location", text: $dropoff)
+                                    .textFieldStyle(.roundedBorder)
+                            }
+                            
+                            Button {
+                                //Button action
+                            } label: {
+                                
+                                HStack{
+                                    Image(systemName: "person.spatialaudio.stereo.3d.fill")
+                                    Text("Address book")
+                                        .font(.subheadline)
+                                }
+
+                            }
+                            
+                            VStack (alignment: .leading) {
+                                
+                                RequiredLabel(title: "Drop-off Address")
+                                TextField("Select drop-off location", text: $dropoff)
+                                    .textFieldStyle(.roundedBorder)
+                            }
+                            
+                            VStack (alignment: .leading) {
+                                
+                                RequiredLabel(title: "Phone")
+                                TextField("Recipient's phone", text: $dropoffPhone)
+                                    .textFieldStyle(.roundedBorder)
+                            }
+                        }
+                    }
                 }
-                                    
-                ))
+                .padding(.top, 16)
+                
+                Button(action: {
+                    //buttun action
+                }) {
+                    HStack{
+                        Image(systemName: "plus.circle.fill")
+                        Text("Add Another Delivery")
+                            .fontWeight(.medium)
+                    }
+                    .padding(.vertical, 16)
+                        .frame(maxWidth: .infinity)
+                }
+                .overlay(RoundedRectangle(cornerRadius: 8).stroke(style: StrokeStyle(lineWidth: 2, dash: [6]))
+                    .foregroundColor(.blue)
+                )
+                .padding(.vertical)
                 
             }
             

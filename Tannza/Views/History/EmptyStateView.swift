@@ -39,6 +39,7 @@ struct EmptyStateView: View {
                         }
         }
         .padding(.bottom, 50)
+        .padding(.top, 50)
 
     }
 }

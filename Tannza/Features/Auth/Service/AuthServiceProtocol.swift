@@ -9,4 +9,6 @@ import Foundation
 
 protocol AuthServiceProtocol {
     func sendOtp(request: OTPRequest) async throws -> OTPResponse
+    func sendOtpConsume(request: OTPConsumeRequest) async throws -> OtpConsumeResponse
+
 }

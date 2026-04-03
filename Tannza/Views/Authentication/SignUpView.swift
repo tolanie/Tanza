@@ -8,56 +8,39 @@
 import SwiftUI
 import SwiftData
 
-/*
- import SwiftData
-
- @Environment(\.modelContext) private var context
-
- func saveName() {
-     let user = UserData(name: "Tolani")
-     context.insert(user)
-     
-     do {
-         try context.save()
-         print("Saved successfully")
-     } catch {
-         print("Failed to save: \(error)")
-     }
- }
- */
 
 struct SignUpView: View {
     @StateObject var viewModel: OtpViewModel
     @Environment(\.modelContext) private var context
-
+    
     var body: some View {
         NavigationStack {
             VStack(alignment: .leading) {
-                            
+                
                 VStack (alignment: .leading, spacing: 24) {
                     
-//<<<<<<< HEAD
-//                    Text("Enter your mobile number")
-//                        .font(.title)
-//                        .fontWeight(.semibold)
-//                        .foregroundColor(.black)
-//                    
-//                    Text("We'll send you a verification code to confirm your number.")
-//                        .lineLimit(nil)
-//                        .foregroundColor(.gray)
-//                        .font(.subheadline)
-//                    
-//                } .padding(.bottom, 10)
-//                
-//            }.padding(.top, 32)
-//            
-//            HStack {
-//                HStack (spacing: 6) {
-//                    Image("flagg")
-//=======
+                    //<<<<<<< HEAD
+                    //                    Text("Enter your mobile number")
+                    //                        .font(.title)
+                    //                        .fontWeight(.semibold)
+                    //                        .foregroundColor(.black)
+                    //
+                    //                    Text("We'll send you a verification code to confirm your number.")
+                    //                        .lineLimit(nil)
+                    //                        .foregroundColor(.gray)
+                    //                        .font(.subheadline)
+                    //
+                    //                } .padding(.bottom, 10)
+                    //
+                    //            }.padding(.top, 32)
+                    //
+                    //            HStack {
+                    //                HStack (spacing: 6) {
+                    //                    Image("flagg")
+                    //=======
                     // logo
                     Image("logo")
-//>>>>>>> e237c051fc2a943d9bcbbd37e251671b07e8b9d8
+                    //>>>>>>> e237c051fc2a943d9bcbbd37e251671b07e8b9d8
                         .resizable()
                         .scaledToFit()
                         .frame(width: 50, height: 50)
@@ -107,7 +90,7 @@ struct SignUpView: View {
                     
                 } .padding(.vertical, 20)
                 
-                            //sign up button
+                //sign up button
                 VStack (spacing: 24) {
                     
                     ButtonView(title: "Sign up", backgroundColor: Color("Light"), isDisabled: false, foregroundColor: .white) {
@@ -123,12 +106,12 @@ struct SignUpView: View {
                     
                 }
                 
-//<<<<<<< HEAD
-//                ButtonView(title: "Sign up", backgroundColor: Color("Light"), isDisabled: false, foregroundColor: .white) {
-//                    viewModel.login()
-//                    debugPrint("Signup....")
-//                }
-//=======
+                //<<<<<<< HEAD
+                //                ButtonView(title: "Sign up", backgroundColor: Color("Light"), isDisabled: false, foregroundColor: .white) {
+                //                    viewModel.login()
+                //                    debugPrint("Signup....")
+                //                }
+                //=======
                 //or divider
                 HStack{
                     Rectangle()
@@ -190,14 +173,19 @@ struct SignUpView: View {
                     
                 }.frame(maxWidth: .infinity)
                     .multilineTextAlignment(.center)
-//>>>>>>> e237c051fc2a943d9bcbbd37e251671b07e8b9d8
+                //>>>>>>> e237c051fc2a943d9bcbbd37e251671b07e8b9d8
                 
                 
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding()
+            
+            //takes them to the next page
             .navigationDestination(isPresented: $viewModel.shouldNavigateToOTP) {
-                OTPView()
+                let apiClient = APIClient()
+                let authService = AuthService(apiClient: apiClient)
+                let viewModel = OtpConsumeViewModel(authService: authService)
+                OTPView(viewModel: viewModel)
             }
             .alert("Error", isPresented: Binding(
                 get: { viewModel.errorMessage != nil },
@@ -235,13 +223,13 @@ struct SignUpView: View {
             print("Failed to save: \(error)")
         }
     }
-
+    
 }
 
 #Preview {
     let apiClient = APIClient()
-            let authService = AuthService(apiClient: apiClient)
-            let viewModel = OtpViewModel(authService: authService)
+    let authService = AuthService(apiClient: apiClient)
+    let viewModel = OtpViewModel(authService: authService)
     SignUpView(viewModel: viewModel)
 }
 

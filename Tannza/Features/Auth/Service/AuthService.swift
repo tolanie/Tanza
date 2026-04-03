@@ -20,4 +20,12 @@ final class AuthService: AuthServiceProtocol {
             body: request
         )
     }
+    
+    func sendOtpConsume(request: OTPConsumeRequest) async throws -> OtpConsumeResponse {
+        return try await apiClient.post(
+            endpoint: .otpConsume,
+            body: request
+        )
+    }
 }
+

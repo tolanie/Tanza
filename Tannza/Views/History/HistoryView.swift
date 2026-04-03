@@ -94,7 +94,6 @@ struct HistoryView: View {
             }
             
             
-            
             .navigationTitle("Transaction History")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
