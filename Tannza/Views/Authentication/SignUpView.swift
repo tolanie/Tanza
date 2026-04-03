@@ -8,201 +8,178 @@
 import SwiftUI
 import SwiftData
 
-
 struct SignUpView: View {
     @StateObject var viewModel: OtpViewModel
     @Environment(\.modelContext) private var context
-    
+
+    // MARK: - Body
+
     var body: some View {
         NavigationStack {
             VStack(alignment: .leading) {
-                
-                VStack (alignment: .leading, spacing: 24) {
-                    
-                    //<<<<<<< HEAD
-                    //                    Text("Enter your mobile number")
-                    //                        .font(.title)
-                    //                        .fontWeight(.semibold)
-                    //                        .foregroundColor(.black)
-                    //
-                    //                    Text("We'll send you a verification code to confirm your number.")
-                    //                        .lineLimit(nil)
-                    //                        .foregroundColor(.gray)
-                    //                        .font(.subheadline)
-                    //
-                    //                } .padding(.bottom, 10)
-                    //
-                    //            }.padding(.top, 32)
-                    //
-                    //            HStack {
-                    //                HStack (spacing: 6) {
-                    //                    Image("flagg")
-                    //=======
-                    // logo
+
+                VStack(alignment: .leading, spacing: 24) {
+
+                    // Logo
                     Image("logo")
-                    //>>>>>>> e237c051fc2a943d9bcbbd37e251671b07e8b9d8
                         .resizable()
                         .scaledToFit()
                         .frame(width: 50, height: 50)
-                    
-                    //heading text and underline
+
+                    // Heading and subtitle
                     VStack(alignment: .leading, spacing: 10) {
-                        
-                        Text("Enter your mobile number")
+                        Text(Strings.SignUp.title)
                             .font(.title)
                             .fontWeight(.semibold)
                             .foregroundColor(.black)
-                        
-                        Text("We'll send you a verification code to confirm your number.")
+
+                        Text(Strings.SignUp.subtitle)
                             .lineLimit(nil)
                             .foregroundColor(.gray)
                             .font(.subheadline)
-                        
-                    } .padding(.bottom, 10)
-                    
+                    }
+                    .padding(.bottom, 10)
                 }
-                
+
+                // MARK: - Phone Number Input
+
                 HStack {
-                    HStack (spacing: 6) {
+                    // Country code selector (static; extend with a picker if needed)
+                    HStack(spacing: 6) {
                         Image("flagg")
                             .resizable()
                             .scaledToFit()
                             .frame(width: 20, height: 20)
-                        
-                        Text("+234")
+
+                        Text(Strings.SignUp.countryCode)
                             .font(.subheadline)
-                        
+
                         Image(systemName: "chevron.down")
                             .font(.caption)
-                        
                     }
                     .padding()
-                    .background(Color.gray .opacity(0.1))
+                    .background(Color.gray.opacity(0.1))
                     .frame(height: 50)
                     .cornerRadius(8)
-                    
-                    TextField("9153065907", text: $viewModel.phoneNumber)
+
+                    TextField(Strings.SignUp.phonePlaceholder, text: $viewModel.phoneNumber)
                         .keyboardType(.numberPad)
                         .padding()
-                        .background(Color.gray .opacity(0.1))
+                        .background(Color.gray.opacity(0.1))
                         .frame(height: 50)
                         .clipShape(RoundedRectangle(cornerRadius: 8))
-                    
-                } .padding(.vertical, 20)
-                
-                //sign up button
-                VStack (spacing: 24) {
-                    
-                    ButtonView(title: "Sign up", backgroundColor: Color("Light"), isDisabled: false, foregroundColor: .white) {
+                }
+                .padding(.vertical, 20)
+
+                // MARK: - Sign Up Button
+
+                VStack(spacing: 24) {
+                    ButtonView(
+                        title: Strings.SignUp.signUpButton,
+                        backgroundColor: Color("Light"),
+                        isDisabled: false,
+                        foregroundColor: .white
+                    ) {
+                        // Persist the number so OTPView can read it from the view model
                         savePhoneNumber(phoneNumber: viewModel.phoneNumber)
                         viewModel.login()
-                        debugPrint("Signup....")
                     }
-                    
-                    Text("By proceeding, you concent to get calls, Whatsapp or SMS messages, including by automated means, from LogiFlow and it's affiliates to the number provided and Hereby agree to our terms and condition.")
+
+                    Text(Strings.SignUp.disclaimer)
                         .font(.caption)
                         .foregroundColor(.black)
                         .lineLimit(nil)
-                    
                 }
-                
-                //<<<<<<< HEAD
-                //                ButtonView(title: "Sign up", backgroundColor: Color("Light"), isDisabled: false, foregroundColor: .white) {
-                //                    viewModel.login()
-                //                    debugPrint("Signup....")
-                //                }
-                //=======
-                //or divider
-                HStack{
+
+                // MARK: - Social Sign-Up Divider
+
+                HStack {
                     Rectangle()
                         .frame(height: 1)
                         .foregroundColor(.gray.opacity(0.4))
-                    
-                    Text("or")
+
+                    Text(Strings.SignUp.orDivider)
                         .font(.body)
                         .foregroundColor(.gray)
-                    
+
                     Rectangle()
                         .frame(height: 1)
                         .foregroundColor(.gray.opacity(0.4))
-                }.padding(.top, 10)
-                
-                //apple and google button
-                VStack (spacing: 16) {
-                    
-                    ButtonView(title: "Continue with Google",
-                               backgroundColor: .white,
-                               hasOverlay: true, isDisabled: false,
-                               icon: Image("google"),
-                               foregroundColor: .black
-                               
-                    )
-                    {
-                        print("Google button tapped")
+                }
+                .padding(.top, 10)
+
+                // MARK: - Social Buttons
+
+                VStack(spacing: 16) {
+                    ButtonView(
+                        title: Strings.SignUp.googleButton,
+                        backgroundColor: .white,
+                        hasOverlay: true,
+                        isDisabled: false,
+                        icon: Image("google"),
+                        foregroundColor: .black
+                    ) {
+                        // TODO: Implement Google Sign-In
                     }
-                    
-                    
-                    ButtonView(title: "Continue with Apple",
-                               backgroundColor: .white,
-                               hasOverlay: true, isDisabled: false,
-                               icon: Image(systemName: "applelogo"),
-                               foregroundColor: .black
-                               
-                    )
-                    {
-                        print("apple button tapped")
+
+                    ButtonView(
+                        title: Strings.SignUp.appleButton,
+                        backgroundColor: .white,
+                        hasOverlay: true,
+                        isDisabled: false,
+                        icon: Image(systemName: "applelogo"),
+                        foregroundColor: .black
+                    ) {
+                        // TODO: Implement Apple Sign-In
                     }
-                    
-                }.padding(.top, 16)
-                
-                
+                }
+                .padding(.top, 16)
+
                 Spacer()
-                
+
+                // MARK: - Sign In Link
+
                 HStack(alignment: .center, spacing: 3) {
-                    Text("Already have an account?")
+                    Text(Strings.SignUp.haveAccount)
                         .foregroundColor(.gray)
-                    
-                    
+
                     Button {
-                        print("Sign in tapped")
+                        // TODO: Navigate to LoginView
                     } label: {
-                        Text("Sign in")
+                        Text(Strings.SignUp.signInButton)
                             .fontWeight(.semibold)
                             .foregroundColor(Color("Light"))
                     }
-                    
-                }.frame(maxWidth: .infinity)
-                    .multilineTextAlignment(.center)
-                //>>>>>>> e237c051fc2a943d9bcbbd37e251671b07e8b9d8
-                
-                
+                }
+                .frame(maxWidth: .infinity)
+                .multilineTextAlignment(.center)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding()
-            
-            //takes them to the next page
+
+            // Navigate to OTPView once the OTP has been dispatched.
+            // Pass the phone number into OtpConsumeViewModel so OTPView can display it
+            // and use it as the `reference` when calling /otp/consume.
             .navigationDestination(isPresented: $viewModel.shouldNavigateToOTP) {
-                let apiClient = APIClient()
-                let authService = AuthService(apiClient: apiClient)
-                let viewModel = OtpConsumeViewModel(authService: authService)
-                OTPView(viewModel: viewModel)
+                let authService = AuthService(apiClient: APIClient())
+                let consumeViewModel = OtpConsumeViewModel(
+                    phoneNumber: viewModel.phoneNumber,
+                    authService: authService
+                )
+                OTPView(viewModel: consumeViewModel)
             }
-            .alert("Error", isPresented: Binding(
+            .alert(Strings.Common.errorTitle, isPresented: Binding(
                 get: { viewModel.errorMessage != nil },
                 set: { if !$0 { viewModel.errorMessage = nil } }
             )) {
-                Button("OK") {
-                    viewModel.errorMessage = nil
-                }
+                Button(Strings.Common.okButton) { viewModel.errorMessage = nil }
             } message: {
                 Text(viewModel.errorMessage ?? "")
             }
             .overlay {
                 if viewModel.isLoading {
                     ZStack {
-                        Color.black.opacity(0.3)
-                            .ignoresSafeArea()
-                        
+                        Color.black.opacity(0.3).ignoresSafeArea()
                         ProgressView()
                             .scaleEffect(1.5)
                             .tint(.white)
@@ -211,20 +188,25 @@ struct SignUpView: View {
             }
         }
     }
-    
-    func savePhoneNumber(phoneNumber: String) {
+
+    // MARK: - SwiftData
+
+    /// Persists the phone number in SwiftData so it can be displayed in OTPView
+    /// (e.g. "Enter the code sent to +2349153065907").
+    private func savePhoneNumber(phoneNumber: String) {
         let user = UserData(phoneNumber: phoneNumber)
         context.insert(user)
-        
+
         do {
             try context.save()
-            print("Saved successfully")
         } catch {
-            print("Failed to save: \(error)")
+            // Non-fatal: OTP flow can still proceed; phone number will be sourced from the view model.
+            print("Failed to persist phone number: \(error)")
         }
     }
-    
 }
+
+// MARK: - Preview
 
 #Preview {
     let apiClient = APIClient()
@@ -232,5 +214,3 @@ struct SignUpView: View {
     let viewModel = OtpViewModel(authService: authService)
     SignUpView(viewModel: viewModel)
 }
-
-

@@ -7,12 +7,18 @@
 
 import Foundation
 
-struct OtpConsumeResponse: Decodable {
+/// Top-level response from the `/otp/consume` endpoint.
+struct OTPConsumeResponse: Decodable {
+    /// Indicates whether the OTP was verified successfully.
     let success: Bool
+    /// A human-readable message from the server (e.g. "OTP verified").
     let message: String
-    let data: OtpConsumeResponseData?
+    /// Optional payload returned alongside the success flag.
+    let data: OTPConsumeResponseData?
 }
 
-struct OtpConsumeResponseData: Decodable {
+/// Nested payload within `OTPConsumeResponse`.
+struct OTPConsumeResponseData: Decodable {
+    /// An additional message included in the response data, if any.
     let message: String?
 }

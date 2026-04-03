@@ -33,12 +33,12 @@ struct EmailView: View {
                 //heading text and underline
                 VStack(alignment: .leading, spacing: 8) {
                     
-                    Text("Enter your email")
+                    Text(Strings.Email.title)
                         .font(.title)
                         .fontWeight(.semibold)
                         .foregroundColor(.black)
                     
-                    Text("Add your email to aid in account recovery.")
+                    Text(Strings.Email.subtitle)
                         .lineLimit(nil)
                         .foregroundColor(.gray)
                         .font(.subheadline)
@@ -50,7 +50,7 @@ struct EmailView: View {
             
             VStack {
                 
-                TextField("your email", text: $email)
+                TextField(Strings.Email.placeholder, text: $email)
                     .onChange(of: email) {                         hasEditedEmail = true
                     }
                     .keyboardType(.emailAddress)
@@ -68,7 +68,7 @@ struct EmailView: View {
                     )
                 
                 if hasEditedEmail && !isEmailValid {
-                    Text("Please enter a valid email")
+                    Text(Strings.Email.validationError)
                         .font(.subheadline)
                         .foregroundColor(.red)
                         .padding(.top, 16)
@@ -78,7 +78,7 @@ struct EmailView: View {
             
             Spacer()
             
-            ButtonView(title: "Continue", backgroundColor: Color("Light"), isDisabled: !isEmailValid, foregroundColor: .white) {
+            ButtonView(title: Strings.Email.continueButton, backgroundColor: Color("Light"), isDisabled: !isEmailValid, foregroundColor: .white) {
                 print("email tapped")
             }.padding(.bottom, 60)
             
