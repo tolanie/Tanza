@@ -54,12 +54,12 @@ struct SetupView: View {
                 //                //heading text and underline
                 VStack(alignment: .leading, spacing: 8) {
                     
-                    Text("Complete your profile")
+                    Text(Strings.Setup.title)
                         .font(.title)
                         .fontWeight(.semibold)
                         .foregroundColor(.black)
                     
-                    Text("Let us know how to properly address you and secure your account.")
+                    Text(Strings.Setup.subtitle)
                         .lineLimit(nil)
                         .foregroundColor(.gray)
                         .font(.subheadline)
@@ -67,7 +67,7 @@ struct SetupView: View {
                 } .padding(.bottom, 10)
                 
                 VStack(alignment: .leading, spacing: 8) {
-                    Text("Profile Photo")
+                    Text(Strings.Setup.profilePhotoLabel)
                         .font(.title3)
                         .fontWeight(.medium)
                         .foregroundColor(.black)
@@ -102,7 +102,7 @@ struct SetupView: View {
                     }
                     
                     if showImageError {
-                        Text("Profile Photo is required")
+                        Text(Strings.Setup.profilePhotoError)
                             .font(.caption)
                             .foregroundColor(.red)
                         
@@ -114,7 +114,7 @@ struct SetupView: View {
                 
                 VStack(alignment: .leading, spacing: 8) {
                     
-                    Text("Full Name")
+                    Text(Strings.Setup.fullNameLabel)
                         .font(.title3)
                         .fontWeight(.medium)
                         .foregroundColor(.black)
@@ -128,7 +128,7 @@ struct SetupView: View {
                             )
                         
                         if showNameError {
-                            Text("Full Name is required")
+                            Text(Strings.Setup.fullNameError)
                                 .font(.caption)
                                 .foregroundColor(.red)
                         }
@@ -139,7 +139,7 @@ struct SetupView: View {
                 
                 VStack(alignment: .leading, spacing: 8) {
                     
-                    Text("Password")
+                    Text(Strings.Setup.passwordLabel)
                         .font(.title3)
                         .fontWeight(.medium)
                         .foregroundColor(.black)
@@ -153,7 +153,7 @@ struct SetupView: View {
                             )
                         
                         if showPasswordError {
-                            Text("Password is required")
+                            Text(Strings.Setup.passwordError)
                                 .font(.caption)
                                 .foregroundColor(.red)
                             
@@ -165,7 +165,7 @@ struct SetupView: View {
                 
                 VStack(alignment: .leading, spacing: 8) {
                     
-                    Text("Address")
+                    Text(Strings.Setup.addressLabel)
                         .font(.title3)
                         .fontWeight(.medium)
                         .foregroundColor(.black)
@@ -184,13 +184,13 @@ struct SetupView: View {
                         )
                         
                         if showAddressError {
-                            Text("Address is required")
+                            Text(Strings.Setup.addressError)
                                 .font(.caption)
                                 .foregroundColor(.red)
                             
                         }
                         
-                        Button("Use current location") {
+                        Button(Strings.Setup.useCurrentLocation) {
                             getCurrentLoacation()
                         } .font(.default)
                         
@@ -200,7 +200,7 @@ struct SetupView: View {
                 
                 //submit button
                 
-                ButtonView(title: "Complete Setup", backgroundColor: Color("Light"), isDisabled: !isFormValid, foregroundColor: .white) {
+                ButtonView(title: Strings.Setup.completeSetupButton, backgroundColor: Color("Light"), isDisabled: !isFormValid, foregroundColor: .white) {
                     
                     validateForm()
                 }
