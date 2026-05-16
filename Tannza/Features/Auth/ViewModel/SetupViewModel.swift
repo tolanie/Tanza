@@ -53,6 +53,14 @@ final class SetupViewModel: ObservableObject {
 
     // MARK: - Actions
 
+    /// Processes and compresses the profile image, then stores it as Base64.
+    /// - Parameter image: The UIImage to compress
+    func setProfileImage(_ image: UIImage) {
+        if let compressedData = compressImage(image) {
+            profilePic = compressedData.base64EncodedString()
+        }
+    }
+    
     /// On success, sets `shouldNavigateToHome = true`.
     /// On failure, populates `errorMessage` for the view to display.
     func setup() {
@@ -91,6 +99,34 @@ final class SetupViewModel: ObservableObject {
                 errorMessage = "An unexpected error occurred. Please try again."
             }
         }
+    }
+    
+    // MARK: - Private Helpers
+    
+    /// Compresses an image to reduce payload size for API upload.
+    /// - Parameters:
+    ///   - image: The UIImage to compress
+    ///   - maxSizeKB: Maximum size in kilobytes (default: 50KB)
+    /// - Returns: Compressed image data, or nil if compression failed
+    private func compressImage(_ image: UIImage, maxSizeKB: Int = 50) -> Data? {
+        // Resize to smaller dimensions for a profile photo (smaller = less data)
+        let targetSize = CGSize(width: 200, height: 200)
+        let renderer = UIGraphicsImageRenderer(size: targetSize)
+        let resizedImage = renderer.image { _ in
+            image.draw(in: CGRect(origin: .zero, size: targetSize))
+        }
+        
+        // Start with moderate quality and reduce if needed
+        var compression: CGFloat = 0.6
+        var imageData = resizedImage.jpegData(compressionQuality: compression)
+        
+        // Iteratively reduce quality until under the max size
+        while let data = imageData, data.count > maxSizeKB * 1024, compression > 0.05 {
+            compression -= 0.05
+            imageData = resizedImage.jpegData(compressionQuality: compression)
+        }
+        
+        return imageData
     }
 }
 

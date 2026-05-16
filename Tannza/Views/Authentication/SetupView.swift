@@ -88,7 +88,8 @@ struct SetupView: View {
                             if let data = try? await selectedItem?.loadTransferable(type: Data.self),
                                let uiImage = UIImage(data: data) {
                                 profileImage = Image(uiImage: uiImage)
-                                viewModel.profilePic = data.base64EncodedString()                            }
+                                viewModel.setProfileImage(uiImage)
+                            }
                         }
                     }
                     
@@ -250,21 +251,7 @@ struct SetupView: View {
         viewModel.usersAddress.name = address
         viewModel.setup()
     }
-    
-//    func getCurrentLoacation() {
-//        locationManager.requestLocation()
-//        if let location = locationManager.location {
-//            viewModel.usersAddress.lat = location.coordinate.latitude
-//            viewModel.usersAddress.lon = location.coordinate.longitude
-//        }
-//    }
-    
-    
 }
-
-
-
-
 
 #Preview {
     let apiClient = APIClient()
