@@ -16,4 +16,10 @@ protocol AuthServiceProtocol {
 
     /// Submits the OTP code the user entered to verify their identity.
     func sendOtpConsume(request: OTPConsumeRequest) async throws -> OTPConsumeResponse
+    
+    /// To know if the email already exists
+    func getEmail(email: String) async throws -> EmailResponse
+    
+    func signup(request: SetupRequest) async throws -> SignupResponse
+
 }

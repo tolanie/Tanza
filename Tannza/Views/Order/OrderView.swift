@@ -38,13 +38,7 @@ struct OrderView: View {
         NavigationStack {
             
             ScrollView (showsIndicators: false) {
-                
-//                ExpandableSection(title: "Pickup & Sender information",
-//                               
-//                icon: "location.fill",
-//                section: .sender,
-//                activeSection: $activeSection,
-//                content: AnyView
+
                 ExpandableSection(title: "Pickup & Sender information",
                                   icon: "location.fill",
                                   section: .sender,
@@ -85,7 +79,6 @@ struct OrderView: View {
                         
                         Text("Delivery Location")
                             .font(.headline)
-                        
                         Spacer()
                         Text("1/10")
                             .foregroundColor(.gray)
@@ -133,6 +126,7 @@ struct OrderView: View {
                 }
                 .padding(.top, 16)
                 
+                
                 Button(action: {
                     //buttun action
                 }) {
@@ -148,6 +142,39 @@ struct OrderView: View {
                     .foregroundColor(.blue)
                 )
                 .padding(.vertical)
+                
+                
+                
+                VStack(alignment: .leading, spacing: 8)  {
+                    
+                    HStack {
+                        Image(systemName: "wallet.bifold.fill")
+                            .foregroundColor(Color("Light"))
+
+                        Text("Payment Method")
+                            .font(.headline)
+                        
+                        Spacer()
+                    }
+                    
+                    VStack (alignment: .leading) {
+                            HStack {
+                                Image(systemName: "circle")
+                                VStack (alignment: .leading){
+                                    Text("Wallet")
+                                    HStack {
+                                        Text("Balance:")
+                                        HStack {
+                                            Image(systemName: "nairasign")
+                                            Text("0")
+                                        }
+                                    }
+                                }
+                            }
+                    }
+                    
+                }
+
                 
             }
             

@@ -38,4 +38,12 @@ final class AuthService: AuthServiceProtocol {
             body: request
         )
     }
+    
+    func getEmail(email: String) async throws -> EmailResponse {
+        return try await apiClient.get(endpoint: .userExistsByEmail, queryParams: ["email" : email])
+    }
+    
+    func signup(request: SetupRequest) async throws -> SignupResponse {
+        return try await apiClient.post(endpoint: .signup, body: request)
+    }
 }

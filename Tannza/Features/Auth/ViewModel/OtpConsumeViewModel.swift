@@ -37,7 +37,9 @@ final class OtpConsumeViewModel: ObservableObject {
     /// The phone number that received the original OTP, used as the `reference` in the request.
     /// Exposed as `internal(set)` so `OTPView` can display it in the heading label.
     private(set) var phoneNumber: String
-
+    
+    private(set) var otp: String = ""
+    
     private let authService: AuthServiceProtocol
 
     // MARK: - Init
@@ -73,6 +75,7 @@ final class OtpConsumeViewModel: ObservableObject {
                 let response = try await authService.sendOtpConsume(request: request)
 
                 if response.success {
+                    otp = code  
                     shouldNavigateToEmail = true
                 } else {
                     // Surface the server's own message so the user knows what went wrong.

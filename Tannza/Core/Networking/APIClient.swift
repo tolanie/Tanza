@@ -19,6 +19,13 @@ protocol APIClientProtocol {
         endpoint: Endpoint,
         body: U
     ) async throws -> T
+
+    /// Sends a GET request to the given endpoint, appending `queryParams` as
+    /// URL query items if provided, and decodes the response into type `T`.
+    func get<T: Decodable>(
+        endpoint: Endpoint,
+        queryParams: [String: String]?
+    ) async throws -> T
 }
 
 // MARK: - Implementation
@@ -83,12 +90,70 @@ final class APIClient: APIClientProtocol {
             throw NetworkError.requestFailed(error)
         }
 
-        // 5. Log response
+        // 5. Log & decode response
         let statusCode = (response as? HTTPURLResponse)?.statusCode ?? -1
-        logResponse(method: endpoint.method, path: endpoint.path, statusCode: statusCode, data: data)
+        return try decodeResponse(T.self, data: data, statusCode: statusCode, method: endpoint.method, path: endpoint.path)
+    }
 
-        // 6. Decode response.
-        //
+    func get<T: Decodable>(
+        endpoint: Endpoint,
+        queryParams: [String: String]? = nil
+    ) async throws -> T {
+
+        // 1. Build URL, appending query params if present
+        guard var components = URLComponents(string: baseURL + endpoint.path) else {
+            logger.error("[GET] \(endpoint.path) — Invalid URL")
+            throw NetworkError.invalidURL
+        }
+
+        if let queryParams, !queryParams.isEmpty {
+            components.queryItems = queryParams.map { URLQueryItem(name: $0.key, value: $0.value) }
+        }
+
+        guard let url = components.url else {
+            logger.error("[GET] \(endpoint.path) — Failed to construct URL with query params")
+            throw NetworkError.invalidURL
+        }
+
+        // 2. Build URLRequest
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+        // Log the outgoing request (no body for GET)
+        logger.debug("""
+        ➡️  REQUEST  [GET] \(endpoint.path)
+        Query: \(queryParams?.description ?? "none")
+        """)
+
+        // 3. Execute request
+        let data: Data
+        let response: URLResponse
+        do {
+            (data, response) = try await session.data(for: request)
+        } catch {
+            logger.error("[GET] \(endpoint.path) — Request failed: \(error)")
+            throw NetworkError.requestFailed(error)
+        }
+
+        // 4. Log & decode response
+        let statusCode = (response as? HTTPURLResponse)?.statusCode ?? -1
+        return try decodeResponse(T.self, data: data, statusCode: statusCode, method: "GET", path: endpoint.path)
+    }
+
+    // MARK: - Shared Decode Helper
+
+    /// Logs the response and decodes it into `T`, applying consistent fallback
+    /// error logic shared by both `post` and `get`.
+    private func decodeResponse<T: Decodable>(
+        _ type: T.Type,
+        data: Data,
+        statusCode: Int,
+        method: String,
+        path: String
+    ) throws -> T {
+        logResponse(method: method, path: path, statusCode: statusCode, data: data)
+
         // We attempt decoding regardless of the HTTP status code because this API
         // always returns a JSON envelope ({ success, message, data }) even for
         // error responses (e.g. 404 "Invalid Otp"). Decoding first lets the view
@@ -98,12 +163,13 @@ final class APIClient: APIClientProtocol {
         // Only if decoding itself fails do we fall back to throwing `httpError`
         // for non-2xx codes, or `decodingFailed` for 2xx codes with unreadable bodies.
         do {
-            return try JSONDecoder().decode(T.self, from: data)
+//            return try JSONDecoder().decode(T.self, from: data)
+            let decoder = JSONDecoder()
+            decoder.keyDecodingStrategy = .convertFromSnakeCase
+            return try decoder.decode(T.self, from: data)
         } catch let decodingError {
-            logger.error("[\(endpoint.method)] \(endpoint.path) — Decoding failed: \(decodingError)")
+            logger.error("[\(method)] \(path) — Decoding failed: \(decodingError)")
 
-            // If the status code was already an error, surface that — it is more
-            // actionable than a decoding error (e.g. a 401 HTML page can't be decoded).
             if !(200...299).contains(statusCode) {
                 throw NetworkError.httpError(statusCode: statusCode)
             }

@@ -20,4 +20,15 @@ struct Endpoint {
     static var otpConsume: Endpoint {
         Endpoint(path: "/otp/consume", method: "POST")
     }
+
+    /// `GET /user/exists/email` — verifies if the user exists.
+    /// Pass `email` via `queryParams` at the call site:
+    /// `apiClient.get(endpoint: .userExistsByEmail, queryParams: ["email": email])`
+    static var userExistsByEmail: Endpoint {
+        Endpoint(path: "/user/exists/email", method: "GET")
+    }
+    
+    static var signup: Endpoint {
+        Endpoint(path: "/auth/sign-up", method: "POST")
+    }
 }

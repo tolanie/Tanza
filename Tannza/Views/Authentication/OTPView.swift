@@ -122,10 +122,12 @@ struct OTPView: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding()
+        
         // Navigate to EmailView once OTP is verified
         .navigationDestination(isPresented: $viewModel.shouldNavigateToEmail) {
-            EmailView()
+            makeEmailView()
         }
+        
         .alert(Strings.Common.errorTitle, isPresented: Binding(
             get: { viewModel.errorMessage != nil },
             set: { if !$0 { viewModel.errorMessage = nil } }
@@ -168,6 +170,15 @@ struct OTPView: View {
         let seconds = timeRemaining % 60
         return String(format: "%d:%02d", minutes, seconds)
     }
+    
+    
+    private func makeEmailView() -> some View {
+        let authService = AuthService(apiClient: APIClient())
+        let emailViewModel = EmailViewModel(authService: authService)
+        emailViewModel.mobile = viewModel.phoneNumber
+        emailViewModel.otp = viewModel.otp
+        return EmailView(viewModel: emailViewModel)
+    }
 
     // MARK: - OTP Display Helpers
 
@@ -183,7 +194,11 @@ struct OTPView: View {
     private func borderColor(for index: Int) -> Color {
         otpText.count == index ? .black : .gray
     }
+    
+    
 }
+
+
 
 // MARK: - Preview
 
