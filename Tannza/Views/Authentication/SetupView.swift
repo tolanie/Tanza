@@ -233,8 +233,11 @@ struct SetupView: View {
             }
         }
         
+        .navigationDestination(isPresented: $viewModel.shouldNavigateToHome) {
+            HomeView()
+        }
+        
     }
-    
     
     
     
